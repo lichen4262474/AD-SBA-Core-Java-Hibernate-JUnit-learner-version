@@ -7,13 +7,18 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import sba.sms.models.Course;
 import sba.sms.models.Student;
 import sba.sms.utils.CommandLine;
+
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 
 @FieldDefaults(level = AccessLevel.PRIVATE)
 class StudentServiceTest {
@@ -29,6 +34,7 @@ class StudentServiceTest {
 	}
 
 	@Test
+	@Order(1)
 	void getAllStudents() {
 
 		List<Student> expected = new ArrayList<>(Arrays.asList(
@@ -39,7 +45,7 @@ class StudentServiceTest {
 				new Student("bolaji@gmail.com", "bolaji saibu", "password")
 				));
 
-		assertThat(studentService.getAllStudents()).hasSameElementsAs(expected);
+		assertThat(expected).hasSameElementsAs(studentService.getAllStudents());
 
 	}
 
@@ -47,25 +53,24 @@ class StudentServiceTest {
 	void getStudentByEmail() {
 		Student expected = new Student("reema@gmail.com", "reema brown", "password");
 		Student getResult = studentService.getStudentByEmail("reema@gmail.com");
-		assertThat(expected.equals(getResult));
+		assertThat(expected).isEqualTo(getResult);
 
 	}
 
 
-//	@Test
-	//	void createStudent() {
-	//		Student expected = new Student("123@gmail.com", "Li Chen", "password");
-	//		studentService.createStudent(expected);
-	//		Student getResult = studentService.getStudentByEmail("123@gmail.com");
-	//		assertThat(expected.equals(getResult));
-	//
-	//
-	//	}
+	@Test
+	void createStudent() {
+		Student expected = new Student("123@gmail.com", "Li Chen", "password");
+		studentService.createStudent(expected);
+		Student getResult = studentService.getStudentByEmail("123@gmail.com");
+		assertThat(expected.equals(getResult));
+
+	}
 
 	@Test
 	void validateStudent() {
 		boolean getResult = studentService.validateStudent("reema@gmail.com", "password");
-		assertThat(getResult == true);
+		assertThat(getResult).isTrue();
 	}
 
 	@Test
@@ -73,7 +78,7 @@ class StudentServiceTest {
 		studentService.registerStudentToCourse("reema@gmail.com", 3);
 		Course addedCourse = courseService.getCourseById(3);
 		List<Course> expected = studentService.getStudentCourses("reema@gmail.com");
-		assertThat(expected.contains(addedCourse));
+		assertThat(expected.get(0)).isEqualTo(addedCourse);
 	}
 
 }
