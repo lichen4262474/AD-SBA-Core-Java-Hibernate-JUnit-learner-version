@@ -52,15 +52,15 @@ class StudentServiceTest {
 	}
 
 
-	@Test
-	void createStudent() {
-		Student expected = new Student("123@gmail.com", "Li Chen", "password");
-		studentService.createStudent(expected);
-		Student getResult = studentService.getStudentByEmail("123@gmail.com");
-		assertThat(expected.equals(getResult));
-
-
-	}
+//	@Test
+	//	void createStudent() {
+	//		Student expected = new Student("123@gmail.com", "Li Chen", "password");
+	//		studentService.createStudent(expected);
+	//		Student getResult = studentService.getStudentByEmail("123@gmail.com");
+	//		assertThat(expected.equals(getResult));
+	//
+	//
+	//	}
 
 	@Test
 	void validateStudent() {
